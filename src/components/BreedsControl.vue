@@ -1,8 +1,6 @@
 <template>
-  <select class="menu-item-select" v-model="beeds" name="" id="">
-    <option value="1">собака 1</option>
-    <option value="2">собака 2</option>
-    <option value="3">собака 3</option>
+  <select class="menu-item-select" v-model="activeBreed" @change="setActiveBreed($event)" name="" id="">
+    <option v-for="breed, breedName in breeds" :value="breedName">{{breedName}}</option>
   </select>
 </template>
 
@@ -10,9 +8,42 @@
 export default {
   data () {
     return {
-      beeds: '1'
+
     }
+  },
+
+  methods: {
+    getBreeds(){
+      this.$store.dispatch('getBreedsNames');
+    },
+
+    setActiveBreed(event){
+      this.activeBreed = event.target.value
+      this.$router.push(event.target.value)
+    }
+  },
+
+  computed: {
+    breeds(){
+      return this.$store.state.breedsNames;
+    },
+
+    activeBreed:{
+      get(){
+        return this.$store.state.activeBreed
+      },
+
+      set(newValue){
+        this.$store.commit('setActiveBreed', newValue);
+      }
+    }
+  },
+
+  created(){
+    this.getBreeds()
   }
+
+
 }
 </script>
 

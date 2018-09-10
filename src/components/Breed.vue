@@ -1,17 +1,31 @@
 <template>
-  <div class="hello">
-    {{ msg }}
+  <div>
+    {{ nameBreed }}
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
   data () {
     return {
       msg: '1'
     }
+  },
+
+  computed:{
+    nameBreed(){
+      return this.$store.state.activeBreed
+    }
+  },
+
+  beforeCreate(){
+
+  },
+
+  created(){
+
   }
+
 }
 </script>
 

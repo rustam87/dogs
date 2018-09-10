@@ -1,34 +1,69 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="breeds">
+    <div class="breeds-item"
+         v-for="breed in breeds"
+         :style="{ 'background-image': 'url(' + breed + ')' }">
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
   data () {
-    return {
-      msg: 'Главная'
+    return {}
+  },
+  timer: null,
+  computed: {
+    breeds(){
+      return this.$store.state.breeds;
+    },
+  },
+  methods: {
+    loadBreeds(){
+      if (this.pageIsEnd()) {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(()=>{
+          this.$store.dispatch('getBreeds');
+        }, 100)
+      }
+    },
+
+    pageIsEnd(){
+      return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200
     }
+  },
+  beforeMount () {
+    window.addEventListener('scroll', this.loadBreeds);
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.loadBreeds);
+  },
+  created(){
+    this.loadBreeds();
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style scoped lang="scss">
+  .breeds {
+    display: flex;
+    flex-wrap: wrap;
+
+    &-item {
+      width: 320px;
+      height: 200px;
+      background-size: cover;
+      background-position: 50%;
+      margin-bottom: 15px;
+
+      &:nth-child(3n + 4){
+        margin-left: 0 !important;
+      }
+    }
+
+    &-item + &-item {
+      margin-left: 20px;
+    }
+  }
 </style>

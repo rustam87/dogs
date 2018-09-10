@@ -6,7 +6,7 @@
           <router-link to="/" class="menu-item-link">Главная</router-link>
         </li>
         <li class="menu-item">
-          beeds
+          <breeds-control></breeds-control>
         </li>
         <li class="menu-item">
           <router-link to="/favorites" class="menu-item-link">Избранное</router-link>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+
 import BreedsControl from './components/BreedsControl'
 
 export default {
