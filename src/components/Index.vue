@@ -1,16 +1,24 @@
 <template>
-  <div class="breeds">
-    <div class="breeds-item"
-         v-for="breed in breeds"
-         :style="{ 'background-image': 'url(' + breed + ')' }">
+  <div>
+    <filter-control></filter-control>
+    <div class="breeds">
+      <div class="breeds-item"
+           v-for="breed in breeds"
+           :style="{ 'background-image': 'url(' + breed + ')' }">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import FilterControl from './FilterControl'
+
 export default {
   data () {
     return {}
+  },
+  components: {
+    FilterControl
   },
   timer: null,
   computed: {
@@ -40,6 +48,9 @@ export default {
   },
   created(){
     this.loadBreeds();
+  },
+  destroyed(){
+    this.$store.commit('cleerBreeds');
   }
 }
 </script>

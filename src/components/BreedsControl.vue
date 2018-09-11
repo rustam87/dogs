@@ -6,12 +6,6 @@
 
 <script>
 export default {
-  data () {
-    return {
-
-    }
-  },
-
   methods: {
     getBreeds(){
       this.$store.dispatch('getBreedsNames');

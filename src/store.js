@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     breedsNames: null,
     breeds: [],
-    activeBreed: null
+    activeBreed: null,
+    isNeedFilter: false
   },
 
   mutations: {
@@ -23,6 +24,16 @@ export default new Vuex.Store({
 
     setActiveBreed(state, payload){
       state.activeBreed = payload;
+    },
+
+    cleerBreeds(state) {
+      state.breeds = []
+    }
+  },
+
+  getters: {
+    apiUrl(){
+      return 'https://dog.ceo/api/'
     }
   },
 
@@ -30,7 +41,7 @@ export default new Vuex.Store({
     getBreedsNames(context){
       axios({
         method:'get',
-        url:'https://dog.ceo/api/breeds/list/all',
+        url: context.getters.apiUrl + 'breeds/list/all',
       })
       .then((res)=>{
         context.commit('updateBreedsNames', res.data.message);
@@ -38,10 +49,12 @@ export default new Vuex.Store({
       })
     },
 
-    getBreeds(context){
+    getBreeds(context, byBreed){
+      let path = this.isNeedFilter ? 'breed' + byBreed  + '/images' : 'breeds/image/random/20'
+
       axios({
         method:'get',
-        url:'https://dog.ceo/api/breeds/image/random/20',
+        url: context.getters.apiUrl + path,
       })
       .then((res)=>{
         context.commit('addBreeds', res.data.message);
