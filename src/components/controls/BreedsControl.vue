@@ -1,6 +1,7 @@
 <template>
-  <select class="menu-item-select" v-model="activeBreed" @change="setActiveBreed($event)" name="" id="">
-    <option v-for="breed, breedName in breeds" :value="breedName">{{breedName}}</option>
+  <select class="menu-item-select" v-model="activeBreed" @change="setActiveBreed($event)">
+    <option disabled value="">Выберите один из вариантов</option>
+    <option v-for="breed, breedName in breeds">{{breedName}}</option>
   </select>
 </template>
 
@@ -14,6 +15,9 @@ export default {
     setActiveBreed(event){
       this.activeBreed = event.target.value
       this.$router.push(event.target.value)
+      this.$store.commit('clearBreeds')
+      this.$store.commit('disableFilter')
+      this.$store.dispatch('getBreedsByFilter', this.activeBreed !== 'Фильтровать по:' ? this.activeBreed: null)
     }
   },
 

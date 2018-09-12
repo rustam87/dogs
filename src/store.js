@@ -9,8 +9,9 @@ export default new Vuex.Store({
   state: {
     breedsNames: null,
     breeds: [],
-    activeBreed: null,
-    isNeedFilter: false
+    activeBreed: '',
+    filterBy: null,
+    isEnableFilter: false
   },
 
   mutations: {
@@ -26,8 +27,24 @@ export default new Vuex.Store({
       state.activeBreed = payload;
     },
 
-    cleerBreeds(state) {
+    clearActiveBreed(state){
+      state.activeBreed = '';
+    },
+
+    clearBreeds(state) {
       state.breeds = []
+    },
+
+    enableFilter(state){
+      state.isEnableFilter = true
+    },
+
+    disableFilter(state){
+      state.isEnableFilter = false
+    },
+
+    setFilter(state, payload) {
+      state.filterBy = payload;
     }
   },
 
@@ -41,7 +58,7 @@ export default new Vuex.Store({
     getBreedsNames(context){
       axios({
         method:'get',
-        url: context.getters.apiUrl + 'breeds/list/all',
+        url: context.getters.apiUrl + 'breeds/list/all'
       })
       .then((res)=>{
         context.commit('updateBreedsNames', res.data.message);
@@ -49,14 +66,40 @@ export default new Vuex.Store({
       })
     },
 
-    getBreeds(context, byBreed){
-      let path = this.isNeedFilter ? 'breed' + byBreed  + '/images' : 'breeds/image/random/20'
+    getBreeds(context){
+      let url = context.getters.apiUrl + 'breeds/image/random/20'
+
+      if (context.state.isEnableFilter) {
+        url = context.getters.apiUrl + 'breed/' + context.state.filterBy  + '/images/random/20'
+      }
 
       axios({
         method:'get',
-        url: context.getters.apiUrl + path,
+        url
       })
       .then((res)=>{
+        context.commit('addBreeds', res.data.message);
+      })
+    },
+
+    getBreedsByFilter(context, breed){
+      let url
+
+      if (breed) {
+        url = context.getters.apiUrl + 'breed/' + breed  + '/images/random/20'
+        context.commit('enableFilter');
+        context.commit('setFilter', breed);
+      } else {
+        url = context.getters.apiUrl + 'breeds/image/random/20'
+        context.commit('disableFilter');
+      }
+
+      axios({
+        method:'get',
+        url
+      })
+      .then((res)=>{
+        context.commit('clearBreeds');
         context.commit('addBreeds', res.data.message);
       })
     }

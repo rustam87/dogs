@@ -1,32 +1,24 @@
 <template>
-  <div>
-    <filter-control></filter-control>
     <div class="breeds">
       <div class="breeds-item"
            v-for="breed in breeds"
            :style="{ 'background-image': 'url(' + breed + ')' }">
       </div>
     </div>
-  </div>
 </template>
 
 <script>
-  import FilterControl from './FilterControl'
-
 export default {
-  data () {
-    return {}
-  },
-  components: {
-    FilterControl
-  },
-  timer: null,
-  computed: {
+  computed:{
     breeds(){
       return this.$store.state.breeds;
-    },
+    }
   },
+  timer: null,
   methods: {
+    getBreeds(){
+      this.$store.dispatch('getBreeds');
+    },
     loadBreeds(){
       if (this.pageIsEnd()) {
         clearTimeout(this.timer);
@@ -35,7 +27,6 @@ export default {
         }, 100)
       }
     },
-
     pageIsEnd(){
       return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200
     }
@@ -47,10 +38,7 @@ export default {
     window.removeEventListener('scroll', this.loadBreeds);
   },
   created(){
-    this.loadBreeds();
-  },
-  destroyed(){
-    this.$store.commit('cleerBreeds');
+    this.getBreeds();
   }
 }
 </script>
@@ -61,20 +49,20 @@ export default {
     display: flex;
     flex-wrap: wrap;
 
-    &-item {
-      width: 320px;
-      height: 200px;
-      background-size: cover;
-      background-position: 50%;
-      margin-bottom: 15px;
+      &-item {
+         width: 320px;
+         height: 200px;
+         background-size: cover;
+         background-position: 50%;
+         margin-bottom: 15px;
 
       &:nth-child(3n + 4){
-        margin-left: 0 !important;
+         margin-left: 0 !important;
+       }
       }
-    }
 
-    &-item + &-item {
-      margin-left: 20px;
-    }
+      &-item + &-item {
+         margin-left: 20px;
+       }
   }
 </style>

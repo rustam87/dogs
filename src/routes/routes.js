@@ -1,6 +1,6 @@
-import Index from '../components/Index'
-import Favorites from '../components/Favorites'
-import Breed from '../components/Breed'
+import Index from '../components/pages/Index'
+import Favorites from '../components/pages/Favorites'
+import Breed from '../components/pages/Breed'
 
 const routes = [
   { path: '/favorites', component: Favorites },

@@ -19,7 +19,7 @@
 
 <script>
 
-import BreedsControl from './components/BreedsControl'
+import BreedsControl from './components/controls/BreedsControl'
 
 export default {
   name: 'App',
