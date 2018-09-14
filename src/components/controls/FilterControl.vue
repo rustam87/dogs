@@ -1,5 +1,5 @@
 <template>
-  <select v-model="activeBreed">
+  <select v-model="activeBreed" @change="setActiveBreed($event)">
     <option disabled value="">Выберите один из вариантов</option>
     <option v-for="(breed, breedName, index) in breeds">{{breedName}}</option>
   </select>
@@ -9,19 +9,19 @@
 export default {
   data(){
     return {
-      activeBreed: ''
+      activeBreed: ""
     }
   },
   computed:{
     breeds(){
       return this.$store.state.breedsNames
+    },
+  },
+  methods: {
+    setActiveBreed(event){
+      this.$store.commit('setActiveBreed', event.target.value)
     }
   },
-  watch:{
-    activeBreed(){
-      this.$store.dispatch('getBreedsByFilter', this.activeBreed !== 'Фильтровать по:' ? this.activeBreed: null)
-    }
-  }
 }
 </script>
 

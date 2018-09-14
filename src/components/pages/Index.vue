@@ -14,16 +14,15 @@ export default {
     FilterControl,
     BreedsPhotos
   },
-  created(){
-    this.$store.commit('clearActiveBreed')
-    this.$store.commit('clearBreeds')
-    this.$store.commit('disableFilter')
-    this.$store.dispatch('getBreeds')
-  },
   destroyed(){
-    this.$store.commit('clearBreeds')
-    this.$store.commit('disableFilter')
+
   },
+
+//  created(){
+//    this.$store.dispatch('clearActiveBreed')
+//    this.$store.dispatch('clearBreeds')
+//    this.$store.dispatch('getBreeds')
+//  }
 }
 </script>
 

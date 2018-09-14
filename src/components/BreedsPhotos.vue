@@ -1,7 +1,8 @@
 <template>
     <div class="breeds">
       <div class="breeds-item"
-           v-for="breed in breeds"
+           v-for="(breed, index) in breeds"
+           :key="index"
            :style="{ 'background-image': 'url(' + breed + ')' }">
       </div>
     </div>
@@ -12,13 +13,13 @@ export default {
   computed:{
     breeds(){
       return this.$store.state.breeds;
+    },
+    activeBreed(){
+        return this.$store.state.activeBreed;
     }
   },
   timer: null,
   methods: {
-    getBreeds(){
-      this.$store.dispatch('getBreeds');
-    },
     loadBreeds(){
       if (this.pageIsEnd()) {
         clearTimeout(this.timer);
@@ -31,15 +32,22 @@ export default {
       return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200
     }
   },
+  watch: {
+      activeBreed(value){
+          this.$store.dispatch('getBreeds');
+      }
+  },
+
+  created(){
+
+  },
   beforeMount () {
     window.addEventListener('scroll', this.loadBreeds);
   },
   beforeDestroy () {
     window.removeEventListener('scroll', this.loadBreeds);
+    this.$store.dispatch('clearActiveBreed');
   },
-  created(){
-    this.getBreeds();
-  }
 }
 </script>
 

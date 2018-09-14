@@ -5,13 +5,26 @@ import router from './routes/router'
 
 Vue.use(Vuex)
 
+const apiUrls = {
+  url: 'https://dog.ceo/api',
+  breedsNames(){
+    return this.url + '/breeds/list/all'
+  },
+
+  breedsRandom(){
+    return this.url + '/breeds/image/random/20'
+  },
+
+  breedsByBreed(breed){
+    return this.url + '/breed/' + breed  + '/images/random/20'
+  }
+}
+
 export default new Vuex.Store({
   state: {
     breedsNames: null,
     breeds: [],
-    activeBreed: '',
-    filterBy: null,
-    isEnableFilter: false
+    activeBreed: ''
   },
 
   mutations: {
@@ -48,60 +61,29 @@ export default new Vuex.Store({
     }
   },
 
-  getters: {
-    apiUrl(){
-      return 'https://dog.ceo/api/'
-    }
-  },
-
   actions: {
     getBreedsNames(context){
-      axios({
+      return axios({
         method:'get',
-        url: context.getters.apiUrl + 'breeds/list/all'
-      })
-      .then((res)=>{
-        context.commit('updateBreedsNames', res.data.message);
-        context.commit('setActiveBreed', router.currentRoute.params.name);
+        url: apiUrls.breedsNames()
       })
     },
 
     getBreeds(context){
-      let url = context.getters.apiUrl + 'breeds/image/random/20'
+      let url = context.state.activeBreed ? apiUrls.breedsByBreed(context.state.activeBreed) : apiUrls.breedsRandom();
 
-      if (context.state.isEnableFilter) {
-        url = context.getters.apiUrl + 'breed/' + context.state.filterBy  + '/images/random/20'
-      }
-
-      axios({
+      return axios({
         method:'get',
-        url
-      })
-      .then((res)=>{
-        context.commit('addBreeds', res.data.message);
-      })
-    },
-
-    getBreedsByFilter(context, breed){
-      let url
-
-      if (breed) {
-        url = context.getters.apiUrl + 'breed/' + breed  + '/images/random/20'
-        context.commit('enableFilter');
-        context.commit('setFilter', breed);
-      } else {
-        url = context.getters.apiUrl + 'breeds/image/random/20'
-        context.commit('disableFilter');
-      }
-
-      axios({
-        method:'get',
-        url
+        url: url
       })
       .then((res)=>{
         context.commit('clearBreeds');
         context.commit('addBreeds', res.data.message);
       })
+    },
+
+    getBreedsByFilter(context, breed){
+
     }
   }
 })
