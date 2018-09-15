@@ -24,7 +24,8 @@ export default new Vuex.Store({
   state: {
     breedsNames: null,
     breeds: [],
-    activeBreed: ''
+    activeBreed: '',
+    favoriteBreeds: []
   },
 
   mutations: {
@@ -48,16 +49,8 @@ export default new Vuex.Store({
       state.breeds = []
     },
 
-    enableFilter(state){
-      state.isEnableFilter = true
-    },
-
-    disableFilter(state){
-      state.isEnableFilter = false
-    },
-
-    setFilter(state, payload) {
-      state.filterBy = payload;
+    addFavorites(state, payload) {
+      state.favoriteBreeds.push(payload)
     }
   },
 
@@ -69,7 +62,7 @@ export default new Vuex.Store({
       })
     },
 
-    getBreeds(context){
+    getBreeds(context, infinite = false){
       let url = context.state.activeBreed ? apiUrls.breedsByBreed(context.state.activeBreed) : apiUrls.breedsRandom();
 
       return axios({
@@ -77,13 +70,12 @@ export default new Vuex.Store({
         url: url
       })
       .then((res)=>{
-        context.commit('clearBreeds');
+        if (!infinite) {
+          context.commit('clearBreeds');
+        }
+
         context.commit('addBreeds', res.data.message);
       })
     },
-
-    getBreedsByFilter(context, breed){
-
-    }
   }
 })

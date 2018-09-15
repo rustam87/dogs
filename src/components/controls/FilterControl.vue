@@ -20,6 +20,7 @@ export default {
   methods: {
     setActiveBreed(event){
       this.$store.commit('setActiveBreed', event.target.value)
+      this.$store.dispatch('getBreeds')
     }
   },
 }

@@ -1,22 +1,26 @@
 <template>
-    <div class="breeds">
+    <div class="breeds" @click="addToFavorites">
       <div class="breeds-item"
-           v-for="(breed, index) in breeds"
-           :key="index"
+           :data-src="breed"
+           v-for="breed in breeds"
            :style="{ 'background-image': 'url(' + breed + ')' }">
       </div>
+      <div v-if="breeds.length === 0 && dataProvider === 'favorites'">
+          <h1>Вы ничего не добавили</h1>
+      </div>
     </div>
+
 </template>
 
 <script>
 export default {
+  props: ['dataProvider'],
+
   computed:{
     breeds(){
-      return this.$store.state.breeds;
+      console.log(this.dataProvider)
+      return this.dataProvider === 'favorites'? this.$store.state.favoriteBreeds : this.$store.state.breeds;
     },
-    activeBreed(){
-        return this.$store.state.activeBreed;
-    }
   },
   timer: null,
   methods: {
@@ -24,29 +28,30 @@ export default {
       if (this.pageIsEnd()) {
         clearTimeout(this.timer);
         this.timer = setTimeout(()=>{
-          this.$store.dispatch('getBreeds');
-        }, 100)
+          this.$store.dispatch('getBreeds', true);
+        }, 150)
       }
     },
     pageIsEnd(){
       return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200
-    }
-  },
-  watch: {
-      activeBreed(value){
-          this.$store.dispatch('getBreeds');
+    },
+
+    addToFavorites(event){
+      const favorites = this.$store.state.favoriteBreeds
+
+      if (event.target.classList.contains('breeds-item')) {
+        const currentImgSrc = event.target.dataset.src;
+        if (!favorites.includes(currentImgSrc)) {
+          this.$store.commit('addFavorites', currentImgSrc)
+        }
       }
-  },
-
-  created(){
-
+    }
   },
   beforeMount () {
     window.addEventListener('scroll', this.loadBreeds);
   },
   beforeDestroy () {
     window.removeEventListener('scroll', this.loadBreeds);
-    this.$store.dispatch('clearActiveBreed');
   },
 }
 </script>
@@ -64,6 +69,14 @@ export default {
          background-position: 50%;
          margin-bottom: 15px;
 
+        &.before {
+
+        }
+
+        &:hover {
+
+        }
+
       &:nth-child(3n + 4){
          margin-left: 0 !important;
        }
@@ -71,6 +84,6 @@ export default {
 
       &-item + &-item {
          margin-left: 20px;
-       }
+      }
   }
 </style>

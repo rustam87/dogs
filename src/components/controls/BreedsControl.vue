@@ -14,8 +14,8 @@ export default {
   },
   methods: {
     setActiveBreed(event){
-      this.$store.commit('clearActiveBreed');
       this.$store.commit('setActiveBreed', event.target.value);
+      this.$store.dispatch('getBreeds');
       this.$router.push(event.target.value)
     }
   },
@@ -31,7 +31,8 @@ export default {
                .then((res) => {
                   this.$store.commit('updateBreedsNames', res.data.message);
                   this.$store.commit('setActiveBreed', this.$router.currentRoute.params.name);
-                  this.activeBreed = this.$router.currentRoute.params.name ? this.$router.currentRoute.params.name : "";
+                  this.$store.dispatch('getBreeds');
+                  this.activeBreed = this.$router.currentRoute.params.name || '';
 
     })
   }

@@ -14,38 +14,14 @@ export default {
     FilterControl,
     BreedsPhotos
   },
-  destroyed(){
-
-  },
-
-//  created(){
-//    this.$store.dispatch('clearActiveBreed')
-//    this.$store.dispatch('clearBreeds')
-//    this.$store.dispatch('getBreeds')
-//  }
+  created(){
+    this.$store.commit('clearActiveBreed')
+    this.$store.dispatch('getBreeds')
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  .breeds {
-    display: flex;
-    flex-wrap: wrap;
 
-    &-item {
-      width: 320px;
-      height: 200px;
-      background-size: cover;
-      background-position: 50%;
-      margin-bottom: 15px;
-
-      &:nth-child(3n + 4){
-        margin-left: 0 !important;
-      }
-    }
-
-    &-item + &-item {
-      margin-left: 20px;
-    }
-  }
 </style>

@@ -1,23 +1,17 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
+  <div class="favorites">
+    <breeds-photos :data-provider="'favorites'"></breeds-photos>
   </div>
 </template>
 
 <script>
+import BreedsPhotos from  '../BreedsPhotos'
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Избранное'
-    }
+  components:{
+    BreedsPhotos
   },
-
   created(){
-    this.$store.commit('clearActiveBreed')
-    this.$store.commit('clearBreeds')
-    this.$store.commit('disableFilter')
-    this.$store.dispatch('getBreeds')
+
   },
 }
 </script>
