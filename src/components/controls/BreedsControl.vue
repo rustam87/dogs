@@ -41,5 +41,23 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .menu-item-select {
+    height: 100%;
+    border: 0;
+    font-size: 16px;
+    padding-left: 15px;
+    -webkit-appearance: none;
+    background-image: url('/static/dog.svg');
+    background-position: 305px center;
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    line-height: 1em;
+    /* for FF */
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+    /* for IE */
+    -ms-appearance: none;
+    appearance: none!important;
+  }
 </style>

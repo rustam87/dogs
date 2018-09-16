@@ -10,9 +10,6 @@ export default {
   components:{
     BreedsPhotos
   },
-  created(){
-    this.$store.dispatch('fillFavorites', true);
-  },
 }
 </script>
 

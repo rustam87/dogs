@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="index-page">
     <filter-control></filter-control>
     <breeds-photos></breeds-photos>
   </div>
@@ -16,12 +16,16 @@ export default {
   },
   created(){
     this.$store.commit('clearActiveBreed')
+    this.$store.commit('clearBreeds')
     this.$store.dispatch('getBreeds')
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+  .index-page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
 </style>

@@ -9,11 +9,13 @@
           <breeds-control></breeds-control>
         </li>
         <li class="menu-item">
-          <router-link to="/favorites" class="menu-item-link">Избранное</router-link>
+          <router-link to="/favorites" class="menu-item-link">Избранное {{totalFavorites}} </router-link>
         </li>
       </ul>
     </nav>
-    <router-view></router-view>
+    <transition  name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -22,10 +24,17 @@
 import BreedsControl from './components/controls/BreedsControl'
 
 export default {
-  name: 'App',
+  computed: {
+    totalFavorites(){
+      return this.$store.state.favoriteBreeds.length || ''
+    }
+  },
   components: {
     BreedsControl
-  }
+  },
+  created(){
+    this.$store.dispatch('fillFavorites');
+  },
 }
 </script>
 
@@ -75,5 +84,23 @@ export default {
     &-item + &-item {
       border-left: 1px solid #CCC;
     }
+
+    .router-link-exact-active {
+      background-color: #EAEAEA;
+    }
+
+  }
+
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 0.3s;
+    transition-property: opacity;
+    transition-timing-function: ease;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0
   }
 </style>
