@@ -18,7 +18,6 @@ export default {
 
   computed:{
     breeds(){
-      console.log(this.dataProvider)
       return this.dataProvider === 'favorites'? this.$store.state.favoriteBreeds : this.$store.state.breeds;
     },
   },
@@ -42,7 +41,7 @@ export default {
       if (event.target.classList.contains('breeds-item')) {
         const currentImgSrc = event.target.dataset.src;
         if (!favorites.includes(currentImgSrc)) {
-          this.$store.commit('addFavorites', currentImgSrc)
+          this.$store.commit('addFavorites', currentImgSrc);
         }
       }
     }

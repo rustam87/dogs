@@ -11,7 +11,7 @@ export default {
     BreedsPhotos
   },
   created(){
-
+    this.$store.dispatch('fillFavorites', true);
   },
 }
 </script>

@@ -51,6 +51,11 @@ export default new Vuex.Store({
 
     addFavorites(state, payload) {
       state.favoriteBreeds.push(payload)
+      localStorage.setItem('favorites', JSON.stringify(state.favoriteBreeds))
+    },
+
+    fillFavorites(state, payload){
+      state.favoriteBreeds = payload
     }
   },
 
@@ -77,5 +82,18 @@ export default new Vuex.Store({
         context.commit('addBreeds', res.data.message);
       })
     },
+
+    fillFavorites(context){
+      let favorites = localStorage.getItem('favorites')
+
+      if (!favorites) {
+          localStorage.setItem('favorites', '[]')
+          return;
+      }
+
+      favorites = JSON.parse(favorites)
+
+      context.commit('fillFavorites', favorites);
+    }
   }
 })
