@@ -25,16 +25,16 @@ import BreedsControl from './components/controls/BreedsControl'
 
 export default {
   computed: {
-    totalFavorites(){
+    totalFavorites () {
       return this.$store.state.favoriteBreeds.length || ''
     }
   },
   components: {
     BreedsControl
   },
-  created(){
-    this.$store.dispatch('fillFavorites');
-  },
+  created () {
+    this.$store.dispatch('fillFavorites')
+  }
 }
 </script>
 
@@ -88,9 +88,7 @@ export default {
     .router-link-exact-active {
       background-color: #EAEAEA;
     }
-
   }
-
 
   .fade-enter-active,
   .fade-leave-active {

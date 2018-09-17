@@ -1,28 +1,28 @@
 <template>
-  <select class="filter-control"v-model="activeBreed" @change="setActiveBreed($event)">
+  <select class="filter-control" v-model="activeBreed" @change="setActiveBreed($event)">
     <option disabled value="">Выберите один из вариантов</option>
-    <option v-for="(breed, breedName, index) in breeds">{{breedName}}</option>
+    <option v-for="(breed, breedName, index) in breeds" :key="index">{{breedName}}</option>
   </select>
 </template>
 
 <script>
 export default {
-  data(){
+  data () {
     return {
-      activeBreed: ""
+      activeBreed: ''
     }
   },
-  computed:{
-    breeds(){
+  computed: {
+    breeds () {
       return this.$store.state.breedsNames
-    },
+    }
   },
   methods: {
-    setActiveBreed(event){
+    setActiveBreed (event) {
       this.$store.commit('setActiveBreed', event.target.value)
       this.$store.dispatch('getBreeds')
     }
-  },
+  }
 }
 </script>
 
@@ -48,6 +48,4 @@ export default {
     -ms-appearance: none;
     appearance: none!important;
   }
-
-
 </style>

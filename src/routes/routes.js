@@ -8,4 +8,4 @@ const routes = [
   { path: '/', component: Index }
 ]
 
-export default routes;
+export default routes

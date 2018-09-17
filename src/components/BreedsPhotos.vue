@@ -14,59 +14,58 @@
 </template>
 
 <script>
-  export default {
-    props: ['dataProvider'],
+export default {
+  props: ['dataProvider'],
 
-    computed: {
-      breeds() {
-        return this.dataProvider === 'favorites' ? this.$store.state.favoriteBreeds : this.$store.state.breeds;
-      }
-    },
-    timer: null,
-    methods: {
-      loadBreeds() {
-        if (this.pageIsEnd()) {
-          clearTimeout(this.timer);
-          this.timer = setTimeout(() => {
-            this.$store.dispatch('getBreeds', true);
-          }, 150)
-        }
-      },
-      pageIsEnd() {
-        return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200
-      },
-
-      addToFavorites(event) {
-        if (this.dataProvider === 'favorites') {
-          return;
-        }
-
-        const favorites = this.$store.state.favoriteBreeds
-
-        if (event.target.classList.contains('breeds-item')) {
-          event.target.classList.add('active');
-          const currentImgSrc = event.target.dataset.src;
-          if (!favorites.includes(currentImgSrc)) {
-            this.$store.commit('addFavorites', currentImgSrc);
-          }
-        }
-      }
-    },
-    updated(){
-      [...document.querySelectorAll('.breeds-item')].forEach((el)=>{
-        el.classList.remove('active')
-      })
-    },
-    beforeMount() {
-      window.addEventListener('scroll', this.loadBreeds);
-    },
-    beforeDestroy() {
-      window.removeEventListener('scroll', this.loadBreeds);
+  computed: {
+    breeds () {
+      return this.dataProvider === 'favorites' ? this.$store.state.favoriteBreeds : this.$store.state.breeds
     }
+  },
+  timer: null,
+  methods: {
+    loadBreeds () {
+      if (this.pageIsEnd()) {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          this.$store.dispatch('getBreeds', true)
+        }, 150)
+      }
+    },
+    pageIsEnd () {
+      return (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200
+    },
+
+    addToFavorites (event) {
+      if (this.dataProvider === 'favorites') {
+        return
+      }
+
+      const favorites = this.$store.state.favoriteBreeds
+
+      if (event.target.classList.contains('breeds-item')) {
+        event.target.classList.add('active')
+        const currentImgSrc = event.target.dataset.src
+        if (!favorites.includes(currentImgSrc)) {
+          this.$store.commit('addFavorites', currentImgSrc)
+        }
+      }
+    }
+  },
+  updated () {
+    [...document.querySelectorAll('.breeds-item')].forEach((el) => {
+      el.classList.remove('active')
+    })
+  },
+  beforeMount () {
+    window.addEventListener('scroll', this.loadBreeds)
+  },
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.loadBreeds)
   }
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .breeds {
     display: flex;

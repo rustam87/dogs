@@ -1,22 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import router from './routes/router'
 
 Vue.use(Vuex)
 
 const apiUrls = {
   url: 'https://dog.ceo/api',
-  breedsNames(){
+  breedsNames () {
     return this.url + '/breeds/list/all'
   },
 
-  breedsRandom(){
+  breedsRandom () {
     return this.url + '/breeds/image/random/20'
   },
 
-  breedsByBreed(breed){
-    return this.url + '/breed/' + breed  + '/images/random/20'
+  breedsByBreed (breed) {
+    return this.url + '/breed/' + breed + '/images/random/20'
   }
 }
 
@@ -29,71 +28,73 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    updateBreedsNames(state, payload){
+    updateBreedsNames (state, payload) {
       state.breedsNames = payload
     },
 
-    addBreeds(state, payload){
+    addBreeds (state, payload) {
       state.breeds = state.breeds.concat(...payload)
     },
 
-    setActiveBreed(state, payload){
-      state.activeBreed = payload;
+    setActiveBreed (state, payload) {
+      state.activeBreed = payload
     },
 
-    clearActiveBreed(state){
-      state.activeBreed = '';
+    clearActiveBreed (state) {
+      state.activeBreed = ''
     },
 
-    clearBreeds(state) {
+    clearBreeds (state) {
       state.breeds = []
     },
 
-    addFavorites(state, payload) {
+    addFavorites (state, payload) {
       state.favoriteBreeds.push(payload)
       localStorage.setItem('favorites', JSON.stringify(state.favoriteBreeds))
     },
 
-    fillFavorites(state, payload){
+    fillFavorites (state, payload) {
       state.favoriteBreeds = payload
     }
   },
 
   actions: {
-    getBreedsNames(context){
+    getBreedsNames (context) {
       return axios({
-        method:'get',
+        method: 'get',
         url: apiUrls.breedsNames()
       })
     },
 
-    getBreeds(context, infinite = false){
-      let url = context.state.activeBreed ? apiUrls.breedsByBreed(context.state.activeBreed) : apiUrls.breedsRandom();
+    getBreeds (context, infinite = false) {
+      let url = context.state.activeBreed ? apiUrls.breedsByBreed(context.state.activeBreed) : apiUrls.breedsRandom()
 
       return axios({
-        method:'get',
+        method: 'get',
         url: url
       })
-      .then((res)=>{
-        if (!infinite) {
-          context.commit('clearBreeds');
-        }
-
-        context.commit('addBreeds', res.data.message);
-      })
+        .then((res) => {
+          if (!infinite) {
+            context.commit('clearBreeds')
+          }
+          context.commit('addBreeds', res.data.message)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
-    fillFavorites(context){
+    fillFavorites (context) {
       let favorites = localStorage.getItem('favorites')
 
       if (!favorites) {
-          localStorage.setItem('favorites', '[]')
-          return;
+        localStorage.setItem('favorites', '[]')
+        return
       }
 
       favorites = JSON.parse(favorites)
 
-      context.commit('fillFavorites', favorites);
+      context.commit('fillFavorites', favorites)
     }
   }
 })

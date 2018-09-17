@@ -6,16 +6,11 @@
 
 <script>
 
-import BreedsPhotos from  '../BreedsPhotos'
+import BreedsPhotos from '../BreedsPhotos'
 
 export default {
-  components:{
-      BreedsPhotos
+  components: {
+    BreedsPhotos
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-
-</style>

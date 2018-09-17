@@ -6,15 +6,15 @@
 </template>
 
 <script>
-  import FilterControl from '../controls/FilterControl'
-  import BreedsPhotos from '../BreedsPhotos'
+import FilterControl from '../controls/FilterControl'
+import BreedsPhotos from '../BreedsPhotos'
 
 export default {
   components: {
     FilterControl,
     BreedsPhotos
   },
-  created(){
+  created () {
     this.$store.commit('clearActiveBreed')
     this.$store.commit('clearBreeds')
     this.$store.dispatch('getBreeds')

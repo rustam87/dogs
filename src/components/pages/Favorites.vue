@@ -5,15 +5,10 @@
 </template>
 
 <script>
-import BreedsPhotos from  '../BreedsPhotos'
+import BreedsPhotos from '../BreedsPhotos'
 export default {
-  components:{
+  components: {
     BreedsPhotos
-  },
+  }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
